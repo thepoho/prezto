@@ -52,12 +52,12 @@ function prompt_poho_setup {
 
   # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%F{green}...%f'
-  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{yellow}--- COMMAND ---%f'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{220}--- COMMAND ---%f'
 
   # Set vcs_info parameters.
   zstyle ':vcs_info:*' check-for-changes true
-  zstyle ':vcs_info:*' formats ' (%F{magenta}%b%f%c%u)'
-  zstyle ':vcs_info:*' actionformats ' (%F{magenta}%b%f%c%u %F{yellow}(%a)%f)'
+  zstyle ':vcs_info:*' formats ' (%F{201}%b%f%c%u)'
+  zstyle ':vcs_info:*' actionformats ' (%F{201}%b%f%c%u %F{220}(%a)%f)'
   zstyle ':vcs_info:*' stagedstr '%F{green}+%f'
   zstyle ':vcs_info:*' unstagedstr '%F{green}!%f'
 
@@ -70,10 +70,10 @@ function prompt_poho_setup {
 
   # Define prompts.
   PROMPT='
-%F{magenta}%n%f@%F{yellow}%m%f:%F{green}${_prompt_poho_pwd}%f${vcs_info_msg_0_}
+%F{201}%n%f@%F{220}%m%f:%F{green}${_prompt_poho_pwd}%f${vcs_info_msg_0_}
 %F{white}${_prompt_poho_symbol}%f '
   RPROMPT='${editor_info[keymap]}'
-  SPROMPT='zsh: correct %F{magenta}%R%f to %F{green}%r%f [nyae]? '
+  # SPROMPT='zsh: correct %F{201}%R%f to %F{green}%r%f [nyae]? '
 }
 
 prompt_poho_setup "$@"

@@ -14,3 +14,5 @@ fi
 alias av='aws-vault'
 alias ave='aws-vault exec'
 alias avl='aws-vault login'
+
+source /opt/boxen/env.sh

@@ -2,9 +2,9 @@
 # A colourful, friendly, multiline theme with some handy features:
 #
 # Authors:
-#   Peter Hofmann 
+#   Poho
 # Borrowed from:
-#   https://github.com/giddie/prezto/blob/e564f53a5aeb6593e942f3b08413b10cee5fd5de/modules/prompt/functions/prompt_giddie_setup
+#   https://github.com/giddie/prezto/blob/e564f53a5aeb6593e942f3b08413b10cee5fd5de/modules/prompt/functions/prompt_poho_setup
 #
 # Features:
 #   - Simple VCS branch, staged, and unstaged indication.
@@ -15,20 +15,27 @@
 #   http://i.imgur.com/rCo3S.png
 #
 
-function prompt_poho_precmd {
-  # Replace "/home/<user>" with "~"
-  _prompt_poho_pwd="${PWD/#$HOME/~}"
-
-  # Choose prompt symbol based on whether or not we are in a repository.
-  if (( $+commands[git] )) && git rev-parse 2> /dev/null; then
-  #  _prompt_poho_symbol='±'
-    vcs_info
-  #else
-  #  _prompt_poho_symbol=')'
-  fi
-
-  
+function +vi-set_novcs_prompt_symbol {
+  # _prompt_poho_symbol=')'
   _prompt_poho_symbol='$'
+}
+
+function +vi-set_vcs_prompt_symbol {
+  # _prompt_poho_symbol='±'
+  _prompt_poho_symbol='$'
+}
+
+function +vi-git_precmd {
+  # Check for untracked files, since vcs_info does not.
+  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
+    hook_com[unstaged]+='%F{green}?%f'
+  fi
+}
+
+function prompt_poho_precmd {
+  # Replace '/home/<user>' with '~'.
+  _prompt_poho_pwd="${PWD/#$HOME/~}"
+  vcs_info
 }
 
 function prompt_poho_setup {
@@ -40,25 +47,33 @@ function prompt_poho_setup {
   autoload -Uz vcs_info
   autoload -Uz add-zsh-hook
 
-  # Add hook to call our function before each command
+  # Add hook to set up prompt parameters before each command.
   add-zsh-hook precmd prompt_poho_precmd
 
+  # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%F{green}...%f'
-  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{yellow}--- VI-COMMAND ---%f'
-  zstyle ':vcs_info:*' enable git
+  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{yellow}--- COMMAND ---%f'
+
+  # Set vcs_info parameters.
   zstyle ':vcs_info:*' check-for-changes true
   zstyle ':vcs_info:*' formats ' (%F{magenta}%b%f%c%u)'
-  zstyle ':vcs_info:*' actionformats ' on %F{magenta}%b%f%c%u %F{yellow}(%a)%f'
-  zstyle ':vcs_info:*' stagedstr '%F{green} +%f'
-  zstyle ':vcs_info:*' unstagedstr '%F{green} *%f'
+  zstyle ':vcs_info:*' actionformats ' (%F{magenta}%b%f%c%u %F{yellow}(%a)%f)'
+  zstyle ':vcs_info:*' stagedstr '%F{green}+%f'
+  zstyle ':vcs_info:*' unstagedstr '%F{green}!%f'
+
+  # Set vcs_info hooks.
+  # NOTE: Prior to Zsh v4.3.12, there are no static hooks, no vcs_info_hookadd
+  #       function, and no 'no-vcs' hook.
+  zstyle ':vcs_info:*+start-up:*' hooks set_novcs_prompt_symbol
+  zstyle ':vcs_info:git*+set-message:*' hooks set_vcs_prompt_symbol git_precmd
+  zstyle ':vcs_info:*+set-message:*' hooks set_vcs_prompt_symbol
 
   # Define prompts.
   PROMPT='
-%F{magenta}%n%f@%F{yellow}envato%f:%F{green}${_prompt_poho_pwd}%f${vcs_info_msg_0_}
+%F{magenta}%n%f@%F{yellow}%m%f:%F{green}${_prompt_poho_pwd}%f${vcs_info_msg_0_}
 %F{white}${_prompt_poho_symbol}%f '
-  RPROMPT=
+  RPROMPT='${editor_info[keymap]}'
   SPROMPT='zsh: correct %F{magenta}%R%f to %F{green}%r%f [nyae]? '
 }
 
 prompt_poho_setup "$@"
-

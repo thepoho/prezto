@@ -28,7 +28,7 @@ version is 4.3.17.
     ln -s ~/.zprezto/runcoms/zprofile ~/.zprofile
     ln -s ~/.zprezto/runcoms/zshenv ~/.zshenv
     ln -s ~/.zprezto/runcoms/zshrc ~/.zshrc
-    ```
+```
 
   4. Set Zsh as your default shell:
 

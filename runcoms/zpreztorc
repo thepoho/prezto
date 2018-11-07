@@ -164,3 +164,10 @@ zstyle ':prezto:module:prompt' theme 'poho'
 
 # Integrate with iTerm2.
 # zstyle ':prezto:module:tmux:iterm' integrate 'yes'
+
+alias kc=knuckle_cluster
+export GOPATH=~/.go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+
+alias tp=tsh\ --proxy=teleport.us-east-2.platform.envato-staging.com\ --ttl\ 60\ -l\ peter.hofmann

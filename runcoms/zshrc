@@ -10,17 +10,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
-alias av='aws-vault'
-alias ave='aws-vault exec'
-alias avl='aws-vault login'
-
 alias be='bundle exec'
 
-alias mp='echo git pull && git pull && echo bundle --local && bundle --local && echo rails db:migrate && rails db:migrate'
-
-source /opt/boxen/env.sh
-#source $HOME/.kiex/scripts/kiex
 #eval "$(rbenv init -)"
-#
-BUILDKITE_MYSQL_PORT=13306; export BUILDKITE_MYSQL_PORT
+export PATH="$HOME/.rbenv/bin:$PATH"
